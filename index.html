@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Woof & Purr | ペットサロン・トリミング</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #2a9d8f;
+      --teal-light: #52b8ac;
+      --teal-pale: #e0f5f3;
+      --sand: #f5ede0;
+      --warm: #faf6f0;
+      --text: #2d3a35;
+      --gray: #7a8c86;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif; color: var(--text); background: var(--warm); line-height: 1.85; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 56px; background: white; box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+    .nav-logo { font-size: 1.2rem; font-weight: 800; color: var(--teal); text-decoration: none; }
+    .nav-logo span { color: var(--text); }
+    .nav-cta { background: var(--teal); color: white; padding: 10px 22px; text-decoration: none; border-radius: 40px; font-size: 0.82rem; font-weight: 600; transition: background 0.3s; }
+    .nav-cta:hover { background: var(--teal-light); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; background: linear-gradient(135deg, var(--teal-pale) 0%, var(--sand) 100%);
+      display: grid; grid-template-columns: 1fr 1fr; padding-top: 70px;
+    }
+    .hero-content { display: flex; flex-direction: column; justify-content: center; padding: 80px 64px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--teal); color: white; padding: 6px 16px; border-radius: 40px; font-size: 0.78rem; font-weight: 600; width: fit-content; margin-bottom: 24px; }
+    .hero-title { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 800; line-height: 1.3; margin-bottom: 24px; }
+    .hero-title em { color: var(--teal); font-style: normal; }
+    .hero-desc { color: var(--gray); font-size: 0.95rem; line-height: 2.1; margin-bottom: 48px; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 56px; }
+    .btn-teal { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; background: var(--teal); color: white; text-decoration: none; border-radius: 40px; font-weight: 700; font-size: 0.95rem; transition: all 0.3s; box-shadow: 0 4px 20px rgba(42,157,143,0.3); }
+    .btn-teal:hover { background: var(--teal-light); transform: translateY(-2px); }
+    .btn-outline { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; border: 2px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 40px; font-weight: 700; font-size: 0.95rem; transition: all 0.3s; }
+    .btn-outline:hover { background: var(--teal); color: white; }
+    .hero-checks { display: flex; flex-direction: column; gap: 10px; }
+    .check { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; font-weight: 600; }
+    .check::before { content: '✓'; width: 22px; height: 22px; background: var(--teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; }
+    .hero-image { background: linear-gradient(135deg, var(--teal-pale) 0%, #c5ede9 100%); display: flex; align-items: center; justify-content: center; font-size: 10rem; position: relative; overflow: hidden; }
+    .hero-image::after { content: '🐾'; position: absolute; bottom: 30px; right: 30px; font-size: 3rem; opacity: 0.15; }
+
+    /* STATS */
+    .stats { background: white; padding: 48px 64px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 3px solid var(--teal); }
+    .stat { text-align: center; padding: 16px; border-right: 1px solid #e5eded; }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-size: 2.2rem; font-weight: 900; color: var(--teal); line-height: 1; margin-bottom: 6px; }
+    .stat-num small { font-size: 1rem; }
+    .stat-label { font-size: 0.78rem; color: var(--gray); }
+
+    /* MENU */
+    .menu { padding: 100px 64px; background: var(--warm); }
+    .section-head { text-align: center; margin-bottom: 64px; }
+    .sec-tag { display: inline-block; background: var(--teal-pale); color: var(--teal); padding: 4px 16px; border-radius: 40px; font-size: 0.78rem; font-weight: 700; margin-bottom: 16px; }
+    .sec-title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; }
+    .menu-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 48px; }
+    .menu-tab { padding: 10px 28px; border-radius: 40px; border: 2px solid var(--teal-pale); background: white; color: var(--gray); font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .menu-tab.active { background: var(--teal); color: white; border-color: var(--teal); }
+    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 960px; margin: 0 auto; }
+    .menu-card { background: white; border-radius: 16px; padding: 32px 24px; text-align: center; transition: all 0.3s; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(42,157,143,0.15); }
+    .menu-icon { font-size: 3rem; margin-bottom: 16px; display: block; }
+    .menu-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .menu-desc { font-size: 0.8rem; color: var(--gray); line-height: 1.7; margin-bottom: 16px; }
+    .menu-price { font-size: 1.1rem; font-weight: 700; color: var(--teal); }
+    .menu-price small { font-size: 0.75rem; color: var(--gray); font-weight: 400; }
+
+    /* FEATURES */
+    .features { padding: 100px 64px; background: var(--teal); color: white; }
+    .features .sec-title { color: white; }
+    .features .sec-tag { background: rgba(255,255,255,0.15); color: white; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; max-width: 960px; margin: 0 auto; }
+    .feature-card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 40px 28px; border: 1px solid rgba(255,255,255,0.15); transition: background 0.3s; }
+    .feature-card:hover { background: rgba(255,255,255,0.15); }
+    .feature-icon { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+    .feature-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; }
+    .feature-desc { font-size: 0.85rem; opacity: 0.75; line-height: 1.8; }
+
+    /* STAFF */
+    .staff { padding: 100px 64px; background: white; }
+    .staff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; max-width: 900px; margin: 0 auto; }
+    .staff-card { text-align: center; padding: 40px 24px; background: var(--warm); border-radius: 20px; }
+    .staff-photo { width: 120px; height: 120px; border-radius: 50%; background: var(--teal-pale); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+    .staff-license { font-size: 0.7rem; color: var(--teal); font-weight: 700; margin-bottom: 8px; letter-spacing: 0.05em; }
+    .staff-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .staff-exp { font-size: 0.78rem; color: var(--gray); margin-bottom: 12px; }
+    .staff-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.8; }
+
+    /* VOICE */
+    .voice { padding: 100px 64px; background: var(--teal-pale); }
+    .voice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 960px; margin: 0 auto; }
+    .voice-card { background: white; border-radius: 16px; padding: 32px 24px; }
+    .voice-pet { font-size: 0.72rem; color: var(--teal); font-weight: 700; margin-bottom: 12px; }
+    .voice-text { font-size: 0.85rem; line-height: 1.9; margin-bottom: 16px; }
+    .voice-author { font-size: 0.78rem; color: var(--gray); }
+
+    /* FLOW */
+    .flow { padding: 100px 64px; background: white; }
+    .flow-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; max-width: 860px; margin: 64px auto 0; }
+    .flow-step { text-align: center; padding: 32px 20px; position: relative; }
+    .flow-step::after { content: '→'; position: absolute; right: -16px; top: 40px; color: var(--teal); font-size: 1.5rem; }
+    .flow-step:last-child::after { display: none; }
+    .flow-icon { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+    .flow-num { font-size: 0.7rem; color: var(--teal); font-weight: 700; margin-bottom: 8px; }
+    .flow-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; }
+    .flow-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.7; }
+
+    /* CTA */
+    .cta { padding: 100px 64px; background: var(--sand); text-align: center; }
+    .cta-title { font-size: clamp(1.5rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 16px; }
+    .cta-desc { color: var(--gray); margin-bottom: 48px; font-size: 0.92rem; }
+    .cta-info { display: flex; justify-content: center; gap: 48px; margin-top: 48px; }
+    .cta-info-item { text-align: center; }
+    .cta-info-label { font-size: 0.72rem; color: var(--gray); margin-bottom: 4px; }
+    .cta-info-value { font-size: 1rem; font-weight: 700; }
+
+    footer { background: var(--text); color: rgba(255,255,255,0.4); text-align: center; padding: 28px; font-size: 0.78rem; }
+
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-content { padding: 48px 24px; }
+      .hero-image { height: 240px; font-size: 6rem; }
+      .stats { grid-template-columns: repeat(2, 1fr); padding: 40px 24px; }
+      .stat { border-right: none; }
+      .menu, .features, .staff, .voice, .flow, .cta { padding: 70px 24px; }
+      .menu-grid, .features-grid, .staff-grid, .voice-grid { grid-template-columns: 1fr; }
+      .flow-steps { grid-template-columns: 1fr; }
+      .flow-step::after { display: none; }
+      .cta-info { flex-direction: column; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#" class="nav-logo">Woof <span>& Purr</span></a>
+    <a href="#cta" class="nav-cta">🐾 予約する</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-badge">🐾 吉祥寺・完全予約制</span>
+      <h1 class="hero-title">
+        大切な<em>家族</em>を<br>
+        もっと<em>美しく</em>、<br>
+        もっと快適に。
+      </h1>
+      <p class="hero-desc">
+        愛犬・愛猫のトリミングとケアを、<br>
+        国家資格を持つトリマーが丁寧に担当します。<br>
+        ストレスフリーな環境で、笑顔の帰宅を。
+      </p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-teal">🐾 予約する</a>
+        <a href="#menu" class="btn-outline">メニューを見る</a>
+      </div>
+      <div class="hero-checks">
+        <div class="check">国家資格・愛玩動物看護師在籍</div>
+        <div class="check">犬・猫どちらも対応</div>
+        <div class="check">アレルギー対応シャンプー使用</div>
+      </div>
+    </div>
+    <div class="hero-image">🐕</div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">800<small>+</small></div><div class="stat-label">登録ペット数</div></div>
+    <div class="stat"><div class="stat-num">98<small>%</small></div><div class="stat-label">リピート率</div></div>
+    <div class="stat"><div class="stat-num">10<small>年</small></div><div class="stat-label">営業実績</div></div>
+    <div class="stat"><div class="stat-num">★4.9</div><div class="stat-label">Google評価</div></div>
+  </div>
+
+  <section class="menu" id="menu">
+    <div class="section-head">
+      <span class="sec-tag">MENU</span>
+      <h2 class="sec-title">メニュー</h2>
+    </div>
+    <div class="menu-tabs">
+      <button class="menu-tab active">🐕 犬</button>
+      <button class="menu-tab">🐈 猫</button>
+      <button class="menu-tab">✨ オプション</button>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <span class="menu-icon">✂️</span>
+        <div class="menu-name">フルトリミング</div>
+        <p class="menu-desc">シャンプー・カット・爪切り・耳掃除・肛門腺絞りをまとめて。</p>
+        <div class="menu-price">¥6,600〜<small>（体重・犬種により変動）</small></div>
+      </div>
+      <div class="menu-card">
+        <span class="menu-icon">🛁</span>
+        <div class="menu-name">シャンプー＆ブロー</div>
+        <p class="menu-desc">やさしいオーガニックシャンプーで清潔・さらさらに。</p>
+        <div class="menu-price">¥3,850〜</div>
+      </div>
+      <div class="menu-card">
+        <span class="menu-icon">✨</span>
+        <div class="menu-name">スパコース</div>
+        <p class="menu-desc">炭酸泉浴・保湿トリートメント・アロマ仕上げで特別なケア。</p>
+        <div class="menu-price">¥9,900〜</div>
+      </div>
+      <div class="menu-card">
+        <span class="menu-icon">💅</span>
+        <div class="menu-name">爪切り・爪磨き</div>
+        <p class="menu-desc">爪切りのみの単品コース。嫌がる子も丁寧に対応。</p>
+        <div class="menu-price">¥1,650〜</div>
+      </div>
+      <div class="menu-card">
+        <span class="menu-icon">👂</span>
+        <div class="menu-name">耳掃除・肛門腺</div>
+        <p class="menu-desc">定期的なケアで衛生的に。単品での対応も可。</p>
+        <div class="menu-price">¥1,100〜</div>
+      </div>
+      <div class="menu-card">
+        <span class="menu-icon">📸</span>
+        <div class="menu-name">アフタースナップ</div>
+        <p class="menu-desc">トリミング後の可愛い姿を写真撮影してLINEでお送りします。</p>
+        <div class="menu-price">無料</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="section-head">
+      <span class="sec-tag">WHY CHOOSE US</span>
+      <h2 class="sec-title">Woof & Purrの特徴</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">🏥</span>
+        <div class="feature-title">医療資格スタッフ在籍</div>
+        <p class="feature-desc">愛玩動物看護師・愛玩動物飼養管理士が在籍。皮膚や健康面も確認しながらケアします。</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">😌</span>
+        <div class="feature-title">ストレスフリーな環境</div>
+        <p class="feature-desc">大型犬・小型犬の待機スペースを分離。ケージフリーで自由な時間を過ごせます。</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🌿</span>
+        <div class="feature-title">オーガニックシャンプー</div>
+        <p class="feature-desc">皮膚に優しい無添加・オーガニックシャンプーを使用。敏感肌・アレルギーの子も安心。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="staff">
+    <div class="section-head">
+      <span class="sec-tag">STAFF</span>
+      <h2 class="sec-title">スタッフ紹介</h2>
+    </div>
+    <div class="staff-grid">
+      <div class="staff-card">
+        <div class="staff-photo">👩</div>
+        <div class="staff-license">JKC公認トリマー1級</div>
+        <div class="staff-name">中島 はな</div>
+        <div class="staff-exp">経験年数 12年</div>
+        <p class="staff-desc">大型犬から小型犬まで幅広く対応。怖がりな子への対応が得意です。</p>
+      </div>
+      <div class="staff-card">
+        <div class="staff-photo">👩</div>
+        <div class="staff-license">愛玩動物看護師</div>
+        <div class="staff-name">田村 ゆか</div>
+        <div class="staff-exp">経験年数 8年</div>
+        <p class="staff-desc">猫の扱いのエキスパート。皮膚状態のチェックも行いながらケアします。</p>
+      </div>
+      <div class="staff-card">
+        <div class="staff-photo">👩</div>
+        <div class="staff-license">JKC公認トリマー2級</div>
+        <div class="staff-name">松田 あき</div>
+        <div class="staff-exp">経験年数 5年</div>
+        <p class="staff-desc">シャレたスタイルカットが得意。インスタ映えする仕上がりに定評あり。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="voice">
+    <div class="section-head">
+      <span class="sec-tag">VOICE</span>
+      <h2 class="sec-title">飼い主さんの声</h2>
+    </div>
+    <div class="voice-grid">
+      <div class="voice-card"><div class="voice-pet">🐕 トイプードル / 3歳</div><p class="voice-text">他のサロンでは怖がって大変でしたが、ここのスタッフさんはとても優しく接してくれて、帰る頃にはリラックスしていました！</p><div class="voice-author">30代・F様</div></div>
+      <div class="voice-card"><div class="voice-pet">🐈 スコティッシュフォールド / 2歳</div><p class="voice-text">猫の扱いに慣れているスタッフさんで安心してお任せできます。仕上がりもきれいで、毎回アフター写真が可愛すぎます！</p><div class="voice-author">20代・M様</div></div>
+      <div class="voice-card"><div class="voice-pet">🐕 ゴールデンレトリバー / 5歳</div><p class="voice-text">大型犬でも丁寧に対応してもらえます。スパコースが特に気持ちよさそうで、帰宅後はいつもよく眠っています（笑）</p><div class="voice-author">40代・T様</div></div>
+    </div>
+  </section>
+
+  <section class="flow">
+    <div class="section-head">
+      <span class="sec-tag">FLOW</span>
+      <h2 class="sec-title">ご利用の流れ</h2>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step"><span class="flow-icon">📱</span><div class="flow-num">STEP 01</div><div class="flow-title">WEB予約</div><p class="flow-desc">LINEまたはWEBで24時間予約可能</p></div>
+      <div class="flow-step"><span class="flow-icon">🚗</span><div class="flow-num">STEP 02</div><div class="flow-title">来店・受付</div><p class="flow-desc">コース・スタイルの確認をします</p></div>
+      <div class="flow-step"><span class="flow-icon">🛁</span><div class="flow-num">STEP 03</div><div class="flow-title">トリミング</div><p class="flow-desc">丁寧にグルーミングします</p></div>
+      <div class="flow-step"><span class="flow-icon">📸</span><div class="flow-num">STEP 04</div><div class="flow-title">お渡し・お会計</div><p class="flow-desc">写真をLINEでお送りします</p></div>
+    </div>
+  </section>
+
+  <section class="cta" id="cta">
+    <h2 class="cta-title">まずはご予約から</h2>
+    <p class="cta-desc">初めての方も安心。お気軽にご相談ください。</p>
+    <a href="#" class="btn-teal">🐾 WEB予約する</a>
+    <div class="cta-info">
+      <div class="cta-info-item"><div class="cta-info-label">所在地</div><div class="cta-info-value">東京都武蔵野市吉祥寺本町1-2-3</div></div>
+      <div class="cta-info-item"><div class="cta-info-label">営業時間</div><div class="cta-info-value">10:00 〜 18:00（火曜定休）</div></div>
+      <div class="cta-info-item"><div class="cta-info-label">アクセス</div><div class="cta-info-value">JR吉祥寺駅 北口 徒歩5分</div></div>
+    </div>
+  </section>
+
+  <footer><p>© 2024 Woof & Purr. ALL RIGHTS RESERVED.</p></footer>
+</body>
+</html>
